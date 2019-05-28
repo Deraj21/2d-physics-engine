@@ -3,13 +3,11 @@ body {
   justify-content: center;
   align-items: center;
   background-color: whitesmoke;
-  font-family: 'Press Start 2P', cursive;
-  display: flex;
-  flex-direction: column;
 }
 
-#engine {
-  border: 1px dashed lightslategray;
+#canvas {
+  border: 1px solid rgb(79, 90, 102);
+  border-radius: 2px;
   background-color: white;
   cursor: pointer;
 }
