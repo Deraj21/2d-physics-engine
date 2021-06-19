@@ -1,4 +1,8 @@
 import Ball from './Ball'
+import Polygon from './Polygon'
+import Car from './Car'
+
+const GRAV = 5/20
 
 export default class Engine {
   constructor(ctx, w, h){
@@ -8,7 +12,33 @@ export default class Engine {
     this.h = h
     this.paused = false
 
-    this.ball = new Ball(ctx, {x: this.w/2, y: this.h/2}, {x: 2, y: 0}, {x: 0, y:5/30}, .9, 30)
+    let octagon = [
+      {x:20,   y:60},
+      {x:60,  y:20},
+      {x:60,  y:-20},
+      {x:20,   y:-60},
+      {x:-20,  y:-60},
+      {x:-60, y:-20},
+      {x:-60, y:20},
+      {x:-20,  y:60}
+    ]
+    let diamond = [
+      {x:10, y:30},
+      {x:30, y:-10},
+      {x:-10, y:-30},
+      {x:-30, y:10}
+    ]
+    let rect = [
+      {x:-20, y: 30},
+      {x: 20, y: 30},
+      {x: 20, y:-30},
+      {x:-20, y:-30}
+    ]
+    this.entities = [
+      new Ball(ctx, {x: this.w/2, y: this.h/2}, {x: 2, y: 0}, {x: 0, y:GRAV}, .75, 'indianred', 30),
+      new Car(ctx, {x: this.w/2, y: this.h/2}, {x: 0, y: 0}, {x: 0, y: 0}, 0, 'yellowgreen', rect)
+    ]
+
 
     this.loop = this.loop.bind(this)
   }
@@ -18,13 +48,17 @@ export default class Engine {
   }
 
   draw(){
-    let { ball } = this
+    let { entities } = this
 
-    ball.draw()
+    entities.map(ent => ent.draw())
   }
 
   loop(){
-    let { ctx, w, h, ball, paused } = this
+    if (this.paused){
+      return
+    }
+
+    let { ctx, w, h, paused, entities } = this
 
     ctx.clearRect(0, 0, w, h)
     ctx.save()
@@ -32,8 +66,12 @@ export default class Engine {
     ctx.restore()
 
     // update positions
-    ball.updatePos(w, h)
-    ball.updateVel(w, h)
+    entities.forEach(ent => {
+      ent.updatePos(w, h)
+      ent.updateVel(w, h)
+      ent.updateRotation()
+      ent.updateRotVel()
+    })
 
     // handle collisions HERE
 

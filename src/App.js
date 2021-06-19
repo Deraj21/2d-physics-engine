@@ -6,7 +6,7 @@ import Engine from './components/Engine'
 class App extends Component {
   constructor(){
     super()
-    this.w = 200
+    this.w = 600
     this.h = 600
     this.canvas = null
     this.ctx = null
@@ -20,12 +20,7 @@ class App extends Component {
     this.engine = new Engine(this.ctx, this.w, this.h)
 
     window.requestAnimationFrame(this.engine.loop)
-    
-  }
-  
-  start(){
-    // let fps = 1000/2
-    // setInterval(engine.loop, fps)
+    // setInterval(this.engine.loop, 1000/2)
   }
 
   pause(){
